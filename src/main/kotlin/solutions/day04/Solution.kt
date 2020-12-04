@@ -1,7 +1,7 @@
 package solutions.day04
 
 import org.apache.commons.lang3.StringUtils
-import solutions.SolutionInterface
+import solutions.GenericSolution
 import solutions.day04.FieldValidators.Companion.isValidByr
 import solutions.day04.FieldValidators.Companion.isValidEcl
 import solutions.day04.FieldValidators.Companion.isValidEyr
@@ -12,7 +12,7 @@ import solutions.day04.FieldValidators.Companion.isValidPid
 import util.readFileAsString
 import java.io.File
 
-class Solution : SolutionInterface {
+class Solution : GenericSolution {
     private fun parseInput(inputFile: File): List<Map<String, String>> {
         val inputText = readFileAsString(inputFile)
         val passports = inputText.split("\n\n")

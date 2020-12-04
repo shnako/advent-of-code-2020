@@ -2,7 +2,7 @@ package solutions
 
 import java.io.File
 
-interface SolutionInterface {
+interface GenericSolution {
     fun runPart1(inputFile: File): String
     fun runPart2(inputFile: File): String
 

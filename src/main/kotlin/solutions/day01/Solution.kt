@@ -1,13 +1,13 @@
 package solutions.day01
 
-import solutions.SolutionInterface
+import solutions.GenericSolution
 import util.readIntegers
 import java.io.File
 
 /**
  * Simple backtrack solution which can calculate the product for any number of numbers.
  */
-class Solution : SolutionInterface {
+class Solution : GenericSolution {
     private val targetSum = 2020
 
     private fun calculate(components: Int, inputSet: HashSet<Int>, selectedValues: HashSet<Int>): Int {

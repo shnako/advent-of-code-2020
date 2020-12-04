@@ -1,13 +1,13 @@
 package solutions.day03
 
-import solutions.SolutionInterface
+import solutions.GenericSolution
 import util.read2dCharArray
 import java.io.File
 
 /**
  * We're traversing the grid, wrapping around vertically as the pattern repeats.
  */
-class Solution : SolutionInterface {
+class Solution : GenericSolution {
     private val tree = '#'
 
     private fun calculateTreesOnSlope(grid: Array<CharArray>, slope: Slope): Long {

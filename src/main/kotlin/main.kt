@@ -1,6 +1,5 @@
-import solutions.SolutionInterface
+import solutions.GenericSolution
 import util.getInputFileForDay
-import java.io.File
 
 fun main(args: Array<String>) {
     println("Welcome to Vlad's solutions to Advent of Code 2020!")
@@ -23,7 +22,7 @@ fun run(day: Int, part: Int) {
     val input = getInputFileForDay(day)
 
     println("Running day $day part $part")
-    val solution: SolutionInterface = Class.forName("solutions.day$dayStr.Solution").kotlin.java.newInstance() as SolutionInterface
+    val solution: GenericSolution = Class.forName("solutions.day$dayStr.Solution").kotlin.java.newInstance() as GenericSolution
     val result = solution.run(input, part)
 
     println("Result:")

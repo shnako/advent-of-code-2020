@@ -1,13 +1,13 @@
 package solutions.day02
 
-import solutions.SolutionInterface
+import solutions.GenericSolution
 import util.readLines
 import java.io.File
 
 /**
  * Simple solution which parses the input to PasswordPolicy objects and then validates them.
  */
-class Solution : SolutionInterface {
+class Solution : GenericSolution {
     private fun convertLineToPasswordPolicy(line: String): PasswordPolicy {
         val components = line.split(Regex("[^\\w']+"))
         return PasswordPolicy(components[0].toInt(), components[1].toInt(), components[2].single(), components[3])
