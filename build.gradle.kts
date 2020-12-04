@@ -13,10 +13,12 @@ repositories {
 }
 
 dependencies {
+    implementation("org.apache.commons:commons-lang3:3.11")
+    implementation(kotlin("reflect"))
+
     testImplementation(kotlin("test-junit5"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
-    implementation(kotlin("reflect"))
 }
 
 tasks.test {
