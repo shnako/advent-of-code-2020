@@ -8,7 +8,7 @@ fun getInputFileForDay(day: Int): File {
 }
 
 fun getInputFileForDay(day: String): File {
-    return File("src/main/kotlin/solutions/$day/input.txt")
+    return File("src/main/resources/solutions/$day/input.txt")
 }
 
 fun readLines(file: File): List<String> {
