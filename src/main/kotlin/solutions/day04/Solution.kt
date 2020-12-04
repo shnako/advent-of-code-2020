@@ -2,6 +2,13 @@ package solutions.day04
 
 import org.apache.commons.lang3.StringUtils
 import solutions.SolutionInterface
+import solutions.day04.FieldValidators.Companion.isValidByr
+import solutions.day04.FieldValidators.Companion.isValidEcl
+import solutions.day04.FieldValidators.Companion.isValidEyr
+import solutions.day04.FieldValidators.Companion.isValidHcl
+import solutions.day04.FieldValidators.Companion.isValidHgt
+import solutions.day04.FieldValidators.Companion.isValidIyr
+import solutions.day04.FieldValidators.Companion.isValidPid
 import util.readFileAsString
 import java.io.File
 
@@ -27,7 +34,7 @@ class Solution : SolutionInterface {
         return passportComponents
     }
 
-    private fun isValidPassport(passport: Map<String, String>): Boolean {
+    private fun isValidPassportPart1(passport: Map<String, String>): Boolean {
         return when (passport.size) {
             8 -> true
             7 -> !passport.containsKey("cid")
@@ -35,12 +42,31 @@ class Solution : SolutionInterface {
         }
     }
 
+    private fun isValidPassportPart2(passport: Map<String, String>): Boolean {
+        if (passport.size < 7) {
+            return false
+        }
+
+        if (passport.size == 7 && passport.containsKey("cid")) {
+            return false
+        }
+
+        return isValidByr(passport)
+                && isValidIyr(passport)
+                && isValidEyr(passport)
+                && isValidHgt(passport)
+                && isValidHcl(passport)
+                && isValidEcl(passport)
+                && isValidPid(passport)
+    }
+
     override fun runPart1(inputFile: File): String {
         val passports = parseInput(inputFile)
-        return passports.count { isValidPassport(it) }.toString()
+        return passports.count { isValidPassportPart1(it) }.toString()
     }
 
     override fun runPart2(inputFile: File): String {
-        TODO("Not yet implemented")
+        val passports = parseInput(inputFile)
+        return passports.count { isValidPassportPart2(it) }.toString()
     }
 }
