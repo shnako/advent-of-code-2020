@@ -46,7 +46,7 @@ class FieldValidators {
             return Regex("#[0-9a-f]{6}").matches(hcl)
         }
 
-        var validEcls = listOf("amb", "blu", "brn", "gry", "grn", "hzl", "oth")
+        private var validEcls = listOf("amb", "blu", "brn", "gry", "grn", "hzl", "oth")
         fun isValidEcl(passport: Map<String, String>): Boolean {
             val ecl = passport["ecl"]!!
             return validEcls.contains(ecl)
