@@ -22,7 +22,7 @@ fun run(day: Int, part: Int) {
     val input = getInputFileForDay(day)
 
     println("Running day $day part $part")
-    val solution: GenericSolution = Class.forName("solutions.day$dayStr.Solution").kotlin.java.newInstance() as GenericSolution
+    val solution: GenericSolution = Class.forName("solutions.day$dayStr.Solution").kotlin.java.getDeclaredConstructor().newInstance() as GenericSolution
     val result = solution.run(input, part)
 
     println("Result:")
