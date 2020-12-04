@@ -1,4 +1,5 @@
 import solutions.SolutionInterface
+import util.getInputFileForDay
 import java.io.File
 
 fun main(args: Array<String>) {
@@ -19,7 +20,7 @@ fun main(args: Array<String>) {
 
 fun run(day: Int, part: Int) {
     val dayStr = if (day < 10) "0$day" else day.toString()
-    val input = File("src/main/kotlin/solutions/day$dayStr/input.txt")
+    val input = getInputFileForDay(day)
 
     println("Running day $day part $part")
     val solution: SolutionInterface = Class.forName("solutions.day$dayStr.Solution").kotlin.java.newInstance() as SolutionInterface
