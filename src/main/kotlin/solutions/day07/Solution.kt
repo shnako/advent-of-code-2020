@@ -30,7 +30,7 @@ class Solution : GenericSolution {
                 components[index + 1] + " " + components[index + 2]
             )
             contents.add(content)
-            // skip the bags word and jump 4 lines
+            // skip the bags word and jump 4 words
             index += 4
         }
 
@@ -38,7 +38,6 @@ class Solution : GenericSolution {
     }
 
     private fun convertBagContentsToBagMap(bagContents: List<Pair<String, ArrayList<Content>>>): HashMap<String, Bag> {
-        // Populate the rule map from the bag contents.
         val ruleMap = HashMap<String, Bag>()
         for (polytreeContentPair in bagContents) {
             val bag = Bag(polytreeContentPair.first, polytreeContentPair.second, ArrayList())
