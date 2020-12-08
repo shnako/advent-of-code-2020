@@ -2,14 +2,27 @@ package solutions.day08
 
 import org.apache.commons.lang3.StringUtils
 
-object BootCodeExecutor {
+class BootCodeExecutor {
     data class Instruction(
-        val operation: String,
-        val argument: Int,
+        var operation: String,
+        var argument: Int,
         var executed: Boolean
     )
 
-    fun parseInstructionText(instructionText: String): Instruction {
+    private var accumulator = 0
+    private var operationIndex = 0
+    val instructions: List<Instruction>
+
+    constructor(instructionsText: Collection<String>) {
+        instructions = parseInstructionsText(instructionsText)
+    }
+
+    constructor(instructions: List<Instruction>) {
+        this.instructions = instructions
+        this.instructions.forEach { instruction -> instruction.executed = false }
+    }
+
+    private fun parseInstructionText(instructionText: String): Instruction {
         val components = instructionText.split(" ")
         return Instruction(
             operation = components[0],
@@ -18,34 +31,46 @@ object BootCodeExecutor {
         )
     }
 
-    fun execute(instructionsText: List<String>): Int {
-        val instructions = instructionsText
+    private fun parseInstructionsText(instructionsText: Collection<String>): List<Instruction> {
+        return instructionsText
             .filter { StringUtils.isNotBlank(it) }
             .map { parseInstructionText(it) }
-
-        return executeInstructions(instructions)
     }
 
-    private fun executeInstructions(instructions: List<Instruction>): Int {
-        var accumulator: Int = 0
-        var operationIndex: Int = 0
+    private fun executeInstruction(instruction: Instruction) {
+        when (instruction.operation) {
+            "acc" -> accumulator += instruction.argument
+            "jmp" -> operationIndex += instruction.argument - 1
+            // "nop" -> Do Nothing
+        }
+        instruction.executed = true
+    }
+
+    fun execute(): Int {
         while (operationIndex < instructions.size) {
             val instruction = instructions[operationIndex]
-
-            // Break out of infinite loops
             if (instruction.executed) {
-                break;
+                // Infinite loop detected
+                break
             }
-
-            when (instruction.operation) {
-                "acc" -> accumulator += instruction.argument
-                "jmp" -> operationIndex += instruction.argument - 1
-                // "nop" -> Do Nothing
-            }
-            instruction.executed = true
+            executeInstruction(instruction)
             operationIndex++
         }
 
         return accumulator
+    }
+
+    fun hasInfiniteLoop(): Boolean {
+        while (operationIndex < instructions.size) {
+            val instruction = instructions[operationIndex]
+            if (instruction.executed) {
+                // Infinite loop detected
+                return true
+            }
+            executeInstruction(instruction)
+            operationIndex++
+        }
+
+        return false
     }
 }
