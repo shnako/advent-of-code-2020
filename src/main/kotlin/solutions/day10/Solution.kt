@@ -4,6 +4,16 @@ import solutions.GenericSolution
 import util.readIntegers
 import java.io.File
 
+/**
+ * Knowing that the adapters can all link together makes everything simple.
+ * Just sort them by joltage, measure the difference between consecutive ones and that's part 1 done.
+ *
+ * For part 2 I've used a recursive function that goes through all valid arrangements but that's too slow
+ * as there are hundreds of trillions of valid arrangements. I ran it just for fun for 90 min and it didn't complete.
+ *
+ * The optimal solution is the same as the slow one,
+ * but uses memoization so we don't recalculate results for subsets we've already calculated.
+ */
 class Solution : GenericSolution {
     override fun runPart1(inputFile: File): String {
         val input = readIntegers(inputFile)
