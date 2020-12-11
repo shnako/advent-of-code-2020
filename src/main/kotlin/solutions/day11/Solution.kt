@@ -4,6 +4,13 @@ import solutions.GenericSolution
 import util.read2dCharArray
 import java.io.File
 
+/**
+ * We look in all directions from each seat and use the specified rules to create a new seat grid.
+ *
+ * For part 1 we look only around the seat, while for part 2 we look as far as possible in the same directions.
+ *
+ * Once we notice that nothing changed, we count the occupied seats and return the result.
+ */
 class Solution : GenericSolution {
     private val floor = '.'
     private val empty = 'L'
