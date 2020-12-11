@@ -9,9 +9,22 @@ class Solution : GenericSolution {
     private val empty = 'L'
     private val occupied = '#'
 
+    private val directionGrid = arrayOf(
+        arrayOf(-1, -1),
+        arrayOf(-1, +0),
+        arrayOf(-1, +1),
+        arrayOf(+0, +1),
+        arrayOf(+1, +1),
+        arrayOf(+1, +0),
+        arrayOf(+1, -1),
+        arrayOf(+0, -1)
+    )
+
     private fun countOccupiedSeats(seatGrid: Array<CharArray>): Int {
         return seatGrid.map { seatLine -> seatLine.filter { it == occupied }.count() }.sum()
     }
+
+    private fun Array<CharArray>.copy() = Array(size) { get(it).clone() }
 
     private fun areSeatCoordinatesValid(it: Array<Int>, seatGrid: Array<CharArray>): Boolean {
         if (it[0] < 0 || it[1] < 0) {
@@ -30,23 +43,15 @@ class Solution : GenericSolution {
     }
 
     private fun getAdjacentSeats(i: Int, j: Int, seatGrid: Array<CharArray>): List<Char> {
-        val adjacentSeatCoordinateGrid = arrayOf(
-            arrayOf(i - 1, j - 1),
-            arrayOf(i - 1, j),
-            arrayOf(i - 1, j + 1),
-            arrayOf(i, j + 1),
-            arrayOf(i + 1, j + 1),
-            arrayOf(i + 1, j),
-            arrayOf(i + 1, j - 1),
-            arrayOf(i, j - 1)
-        )
+        val adjacentSeatCoordinateGrid = directionGrid
+            .map { arrayOf(i + it[0], j + it[1]) }
 
         return adjacentSeatCoordinateGrid
             .filter { areSeatCoordinatesValid(it, seatGrid) }
             .map { seatGrid[it[0]][it[1]] }
     }
 
-    private fun getNewSeatState(i: Int, j: Int, seatGrid: Array<CharArray>): Char {
+    private fun getNewSeatStatePart1(i: Int, j: Int, seatGrid: Array<CharArray>): Char {
         val seat = seatGrid[i][j]
         val adjacentSeats = getAdjacentSeats(i, j, seatGrid)
 
@@ -63,14 +68,12 @@ class Solution : GenericSolution {
         return seat
     }
 
-    private fun Array<CharArray>.copy() = Array(size) { get(it).clone() }
-
-    private fun getNewSeatGrid(seatGrid: Array<CharArray>): Array<CharArray> {
+    private fun getNewSeatGridPart1(seatGrid: Array<CharArray>): Array<CharArray> {
         val newSeatGrid = seatGrid.copy()
 
         for (i in seatGrid.indices) {
             for (j in seatGrid[0].indices) {
-                val newSeatState = getNewSeatState(i, j, seatGrid)
+                val newSeatState = getNewSeatStatePart1(i, j, seatGrid)
                 newSeatGrid[i][j] = newSeatState
             }
         }
@@ -82,7 +85,7 @@ class Solution : GenericSolution {
         var seatGrid = read2dCharArray(inputFile)
 
         while (true) {
-            val newSeatGrid = getNewSeatGrid(seatGrid)
+            val newSeatGrid = getNewSeatGridPart1(seatGrid)
 
             if (seatGrid.contentDeepEquals(newSeatGrid)) {
                 break
@@ -94,7 +97,74 @@ class Solution : GenericSolution {
         return countOccupiedSeats(seatGrid).toString()
     }
 
+    private fun getVisibleSeats(i: Int, j: Int, seatGrid: Array<CharArray>): List<Char> {
+        val visibleSeatGrid = arrayListOf<Char>()
+
+        for (direction in directionGrid) {
+            var x = i
+            var y = j
+
+            while (true) {
+                x += direction[0]
+                y += direction[1]
+
+                if (!areSeatCoordinatesValid(arrayOf(x, y), seatGrid)) {
+                    break
+                }
+
+                if (seatGrid[x][y] != floor) {
+                    visibleSeatGrid.add(seatGrid[x][y])
+                    break
+                }
+            }
+        }
+
+        return visibleSeatGrid
+    }
+
+    private fun getNewSeatStatePart2(i: Int, j: Int, seatGrid: Array<CharArray>): Char {
+        val seat = seatGrid[i][j]
+        val visibleSeats = getVisibleSeats(i, j, seatGrid)
+
+        val occupiedSeats = visibleSeats.filter { it == occupied }.count()
+
+        if (seat == empty && occupiedSeats == 0) {
+            return occupied
+        }
+
+        if (seat == occupied && occupiedSeats >= 5) {
+            return empty
+        }
+
+        return seat
+    }
+
+    private fun getNewSeatGridPart2(seatGrid: Array<CharArray>): Array<CharArray> {
+        val newSeatGrid = seatGrid.copy()
+
+        for (i in seatGrid.indices) {
+            for (j in seatGrid[0].indices) {
+                val newSeatState = getNewSeatStatePart2(i, j, seatGrid)
+                newSeatGrid[i][j] = newSeatState
+            }
+        }
+
+        return newSeatGrid
+    }
+
     override fun runPart2(inputFile: File): String {
-        TODO("Not yet implemented")
+        var seatGrid = read2dCharArray(inputFile)
+
+        while (true) {
+            val newSeatGrid = getNewSeatGridPart2(seatGrid)
+
+            if (seatGrid.contentDeepEquals(newSeatGrid)) {
+                break
+            }
+
+            seatGrid = newSeatGrid
+        }
+
+        return countOccupiedSeats(seatGrid).toString()
     }
 }
