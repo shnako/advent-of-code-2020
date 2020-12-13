@@ -6,16 +6,16 @@ import java.io.File
 
 /**
  * The first part is very simple.
- * To find out how long we need to wait for each bus, we can calculate the modulo of the earliest timestamp
+ * To find out how long we need to wait for for each bus, we can calculate (the earliest timestamp modulo bus number)
  * and subtract it from the bus number. The bus for which we need to wait the least is the answer.
  *
  * The second part has too many timestamps to go through and will take too long (see runPart2Naive).
  * My solution starts with the first 2 buses.
- * I find the first timestamp where both buses are valid (firstTimestamp).
- * I then find the second number where both buses are valid (secondTimestamp).
+ * I find the firstTimestamp where both buses are valid.
+ * I then find the secondTimestamp where both buses are valid.
  * The possible solutions show up every (secondTimestamp - firstTimestamp).
  * This allows us to incrementBy = (secondTimestamp - firstTimestamp) instead of by 1.
- * We then repeat the above for the next bus until we found the solution for all buses.
+ * We then repeat the above for the next bus until we find the solution for all buses.
  * The incrementBy shoots up very quickly, which massively reduces the number of steps required, making this fast.
  */
 class Solution : GenericSolution {
