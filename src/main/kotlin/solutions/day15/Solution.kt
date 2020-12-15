@@ -37,18 +37,15 @@ class Solution : GenericSolution {
         }
     }
 
-    private fun playTurnOptimal(spokenNumbers: MutableList<Int>, lastIndexMap: HashMap<Int, Int>): Int {
-        val lastSpokenNumber = spokenNumbers.last()
-
+    private fun playTurnOptimal(turn: Int, lastSpokenNumber: Int, lastIndexMap: HashMap<Int, Int>): Int {
+        var newLastSpokenNumber = 0
         if (lastIndexMap.containsKey(lastSpokenNumber)) {
-            spokenNumbers.add(spokenNumbers.size - lastIndexMap[lastSpokenNumber]!!)
-        } else {
-            spokenNumbers.add(0)
+            newLastSpokenNumber = turn - lastIndexMap[lastSpokenNumber]!!
         }
 
-        lastIndexMap[lastSpokenNumber] = (spokenNumbers.size - 1)
+        lastIndexMap[lastSpokenNumber] = turn
 
-        return lastSpokenNumber
+        return newLastSpokenNumber
     }
 
     private fun play(turns: Int, numbers: MutableList<Int>): Int {
@@ -57,11 +54,12 @@ class Solution : GenericSolution {
             lastIndexMap[numbers[i]] = (i + 1)
         }
 
+        var lastSpokenNumber = numbers.last()
         for (turn in numbers.size until turns) {
-            playTurnOptimal(numbers, lastIndexMap)
+            lastSpokenNumber = playTurnOptimal(turn, lastSpokenNumber, lastIndexMap)
         }
 
-        return numbers.last()
+        return lastSpokenNumber
     }
 
     override fun runPart1(inputFile: File): String {
