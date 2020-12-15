@@ -5,12 +5,10 @@ import util.readLines
 import java.io.File
 
 class Solution : GenericSolution {
-
-    private fun parseNumber(inputFile: File): MutableList<Int> {
+    private fun parseNumber(inputFile: File): List<Int> {
         return readLines(inputFile)[0]
             .split(",")
             .map { it.toInt() }
-            .toMutableList()
     }
 
     @Suppress("unused", "kotlin:S1144") // Keeping as alternate solution.
@@ -48,10 +46,12 @@ class Solution : GenericSolution {
         return newLastSpokenNumber
     }
 
-    private fun play(turns: Int, numbers: MutableList<Int>): Int {
+    private fun play(turns: Int, inputFile: File): Int {
+        val numbers = parseNumber(inputFile)
+
         val lastIndexMap = HashMap<Int, Int>()
         for (i in 0..numbers.size - 2) {
-            lastIndexMap[numbers[i]] = (i + 1)
+            lastIndexMap[numbers[i]] = i + 1
         }
 
         var lastSpokenNumber = numbers.last()
@@ -63,14 +63,10 @@ class Solution : GenericSolution {
     }
 
     override fun runPart1(inputFile: File): String {
-        val numbers = parseNumber(inputFile)
-        val result = play(2020, numbers)
-        return result.toString()
+        return play(2020, inputFile).toString()
     }
 
     override fun runPart2(inputFile: File): String {
-        val numbers = parseNumber(inputFile)
-        val result = play(30000000, numbers)
-        return result.toString()
+        return play(30000000, inputFile).toString()
     }
 }
