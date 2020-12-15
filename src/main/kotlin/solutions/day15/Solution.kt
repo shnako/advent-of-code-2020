@@ -6,38 +6,38 @@ import java.io.File
 
 class Solution : GenericSolution {
 
-    private fun parseNumber(inputFile: File): MutableList<Long> {
+    private fun parseNumber(inputFile: File): MutableList<Int> {
         return readLines(inputFile)[0]
             .split(",")
-            .map { it.toLong() }
+            .map { it.toInt() }
             .toMutableList()
     }
 
     @Suppress("unused", "kotlin:S1144") // Keeping as alternate solution.
-    private fun playTurnNaive(spokenNumbers: MutableList<Long>) {
-        var lastNumberSpoken = -1L
-        var previousOccurrence = -1L
+    private fun playTurnNaive(spokenNumbers: MutableList<Int>) {
+        var lastNumberSpoken = -1
+        var previousOccurrence = -1
 
         for (i in spokenNumbers.indices.reversed()) {
-            if (lastNumberSpoken == -1L) {
+            if (lastNumberSpoken == -1) {
                 lastNumberSpoken = spokenNumbers[i]
                 continue
             }
 
             if (spokenNumbers[i] == lastNumberSpoken) {
-                previousOccurrence = i.toLong() + 1
+                previousOccurrence = i + 1
                 break
             }
         }
 
-        if (previousOccurrence == -1L) {
+        if (previousOccurrence == -1) {
             spokenNumbers.add(0)
         } else {
             spokenNumbers.add(spokenNumbers.size - previousOccurrence)
         }
     }
 
-    private fun playTurnOptimal(spokenNumbers: MutableList<Long>, lastIndexMap: HashMap<Long, Long>): Long {
+    private fun playTurnOptimal(spokenNumbers: MutableList<Int>, lastIndexMap: HashMap<Int, Int>): Int {
         val lastSpokenNumber = spokenNumbers.last()
 
         if (lastIndexMap.containsKey(lastSpokenNumber)) {
@@ -46,15 +46,15 @@ class Solution : GenericSolution {
             spokenNumbers.add(0)
         }
 
-        lastIndexMap[lastSpokenNumber] = (spokenNumbers.size - 1).toLong()
+        lastIndexMap[lastSpokenNumber] = (spokenNumbers.size - 1)
 
         return lastSpokenNumber
     }
 
-    private fun play(turns: Long, numbers: MutableList<Long>): Long {
-        val lastIndexMap = HashMap<Long, Long>()
+    private fun play(turns: Int, numbers: MutableList<Int>): Int {
+        val lastIndexMap = HashMap<Int, Int>()
         for (i in 0..numbers.size - 2) {
-            lastIndexMap[numbers[i]] = (i + 1).toLong()
+            lastIndexMap[numbers[i]] = (i + 1)
         }
 
         for (turn in numbers.size until turns) {
