@@ -11,6 +11,9 @@ class Solution : GenericSolution {
             .map { it.toInt() }
     }
 
+    /**
+     * This runs part 1 fine but takes far too long for part 2.
+     */
     @Suppress("unused", "kotlin:S1144") // Keeping as alternate solution.
     private fun playTurnNaive(spokenNumbers: MutableList<Int>) {
         var lastNumberSpoken = -1
@@ -35,7 +38,11 @@ class Solution : GenericSolution {
         }
     }
 
-    private fun playTurnOptimal(turn: Int, lastSpokenNumber: Int, lastIndexMap: HashMap<Int, Int>): Int {
+    /**
+     * This runs part 2 in about 4s.
+     */
+    @Suppress("unused", "kotlin:S1144") // Keeping as alternate solution.
+    private fun playTurnOptimalUsingMap(turn: Int, lastSpokenNumber: Int, lastIndexMap: HashMap<Int, Int>): Int {
         var newLastSpokenNumber = 0
         if (lastIndexMap.containsKey(lastSpokenNumber)) {
             newLastSpokenNumber = turn - lastIndexMap[lastSpokenNumber]!!
@@ -46,17 +53,31 @@ class Solution : GenericSolution {
         return newLastSpokenNumber
     }
 
+    /**
+     * This runs part 2 in about 600ms.
+     */
+    private fun playTurnOptimalUsingArray(turn: Int, lastSpokenNumber: Int, lastIndexArray: IntArray): Int {
+        var newLastSpokenNumber = 0
+        if (lastIndexArray[lastSpokenNumber] != -1) {
+            newLastSpokenNumber = turn - lastIndexArray[lastSpokenNumber]
+        }
+
+        lastIndexArray[lastSpokenNumber] = turn
+
+        return newLastSpokenNumber
+    }
+
     private fun play(turns: Int, inputFile: File): Int {
         val numbers = parseNumber(inputFile)
 
-        val lastIndexMap = HashMap<Int, Int>()
+        val lastIndexArray = IntArray(30000000) {-1}
         for (i in 0..numbers.size - 2) {
-            lastIndexMap[numbers[i]] = i + 1
+            lastIndexArray[numbers[i]] = i + 1
         }
 
         var lastSpokenNumber = numbers.last()
         for (turn in numbers.size until turns) {
-            lastSpokenNumber = playTurnOptimal(turn, lastSpokenNumber, lastIndexMap)
+            lastSpokenNumber = playTurnOptimalUsingArray(turn, lastSpokenNumber, lastIndexArray)
         }
 
         return lastSpokenNumber
