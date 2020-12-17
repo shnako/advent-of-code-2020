@@ -29,7 +29,7 @@ class Solution : GenericSolution {
             .map { arrayOf(i + it[0], j + it[1]) }
 
         return adjacentSeatCoordinateGrid
-            .filter { are2DCoordinatesValid(it, seatGrid) }
+            .filter { are2DCoordinatesValid(it[0], it[1], seatGrid) }
             .map { seatGrid[it[0]][it[1]] }
     }
 
@@ -90,7 +90,7 @@ class Solution : GenericSolution {
                 x += direction[0]
                 y += direction[1]
 
-                if (!are2DCoordinatesValid(arrayOf(x, y), seatGrid)) {
+                if (!are2DCoordinatesValid(x, y, seatGrid)) {
                     break
                 }
 

@@ -15,12 +15,12 @@ val neighbours2D = arrayOf(
     arrayOf(+1, +1),
 )
 
-fun are2DCoordinatesValid(coordinates: Array<Int>, grid2D: Array<CharArray>): Boolean {
-    if (coordinates[0] < 0 || coordinates[1] < 0) {
+fun are2DCoordinatesValid(x: Int, y: Int, grid2D: Array<CharArray>): Boolean {
+    if (x < 0 || y < 0) {
         return false
     }
 
-    if (coordinates[0] >= grid2D.size || coordinates[1] >= grid2D[0].size) {
+    if (x >= grid2D.size || y >= grid2D[x].size) {
         return false
     }
 
@@ -35,28 +35,36 @@ val neighbours3D = arrayOf(
     arrayOf(-1, -1, -1),
     arrayOf(-1, -1, +0),
     arrayOf(-1, -1, +1),
+
     arrayOf(-1, +0, -1),
     arrayOf(-1, +0, +0),
     arrayOf(-1, +0, +1),
+
     arrayOf(-1, +1, -1),
     arrayOf(-1, +1, +0),
     arrayOf(-1, +1, +1),
 
+
     arrayOf(+0, -1, -1),
     arrayOf(+0, -1, +0),
     arrayOf(+0, -1, +1),
+
     arrayOf(+0, +0, -1),
     arrayOf(+0, +0, +1),
+
     arrayOf(+0, +1, -1),
     arrayOf(+0, +1, +0),
     arrayOf(+0, +1, +1),
 
+
     arrayOf(+1, -1, -1),
     arrayOf(+1, -1, +0),
     arrayOf(+1, -1, +1),
+
     arrayOf(+1, +0, -1),
     arrayOf(+1, +0, +0),
     arrayOf(+1, +0, +1),
+
     arrayOf(+1, +1, -1),
     arrayOf(+1, +1, +0),
     arrayOf(+1, +1, +1),
@@ -76,36 +84,43 @@ fun are3DCoordinatesValid(x: Int, y: Int, z: Int, grid3D: Array<Array<BooleanArr
 
 // endregion
 
-
 // region 4D
 
 val neighbours4D = arrayOf(
     arrayOf(-1, -1, -1, -1),
     arrayOf(-1, -1, -1, +0),
     arrayOf(-1, -1, -1, +1),
+
     arrayOf(-1, -1, +0, -1),
     arrayOf(-1, -1, +0, +0),
     arrayOf(-1, -1, +0, +1),
+
     arrayOf(-1, -1, +1, -1),
     arrayOf(-1, -1, +1, +0),
     arrayOf(-1, -1, +1, +1),
 
+
     arrayOf(-1, +0, -1, -1),
     arrayOf(-1, +0, -1, +0),
     arrayOf(-1, +0, -1, +1),
+
     arrayOf(-1, +0, +0, -1),
     arrayOf(-1, +0, +0, +0),
     arrayOf(-1, +0, +0, +1),
+
     arrayOf(-1, +0, +1, -1),
     arrayOf(-1, +0, +1, +0),
     arrayOf(-1, +0, +1, +1),
 
+
     arrayOf(-1, +1, -1, -1),
     arrayOf(-1, +1, -1, +0),
     arrayOf(-1, +1, -1, +1),
+
     arrayOf(-1, +1, +0, -1),
     arrayOf(-1, +1, +0, +0),
     arrayOf(-1, +1, +0, +1),
+
     arrayOf(-1, +1, +1, -1),
     arrayOf(-1, +1, +1, +0),
     arrayOf(-1, +1, +1, +1),
@@ -114,28 +129,36 @@ val neighbours4D = arrayOf(
     arrayOf(+0, -1, -1, -1),
     arrayOf(+0, -1, -1, +0),
     arrayOf(+0, -1, -1, +1),
+
     arrayOf(+0, -1, +0, -1),
     arrayOf(+0, -1, +0, +0),
     arrayOf(+0, -1, +0, +1),
+
     arrayOf(+0, -1, +1, -1),
     arrayOf(+0, -1, +1, +0),
     arrayOf(+0, -1, +1, +1),
 
+
     arrayOf(+0, +0, -1, -1),
     arrayOf(+0, +0, -1, +0),
     arrayOf(+0, +0, -1, +1),
+
     arrayOf(+0, +0, +0, -1),
     arrayOf(+0, +0, +0, +1),
+
     arrayOf(+0, +0, +1, -1),
     arrayOf(+0, +0, +1, +0),
     arrayOf(+0, +0, +1, +1),
 
+
     arrayOf(+0, +1, -1, -1),
     arrayOf(+0, +1, -1, +0),
     arrayOf(+0, +1, -1, +1),
+
     arrayOf(+0, +1, +0, -1),
     arrayOf(+0, +1, +0, +0),
     arrayOf(+0, +1, +0, +1),
+
     arrayOf(+0, +1, +1, -1),
     arrayOf(+0, +1, +1, +0),
     arrayOf(+0, +1, +1, +1),
@@ -144,29 +167,37 @@ val neighbours4D = arrayOf(
     arrayOf(+1, -1, -1, -1),
     arrayOf(+1, -1, -1, +0),
     arrayOf(+1, -1, -1, +1),
+
     arrayOf(+1, -1, +0, -1),
     arrayOf(+1, -1, +0, +0),
     arrayOf(+1, -1, +0, +1),
+
     arrayOf(+1, -1, +1, -1),
     arrayOf(+1, -1, +1, +0),
     arrayOf(+1, -1, +1, +1),
 
+
     arrayOf(+1, +0, -1, -1),
     arrayOf(+1, +0, -1, +0),
     arrayOf(+1, +0, -1, +1),
+
     arrayOf(+1, +0, +0, -1),
     arrayOf(+1, +0, +0, +0),
     arrayOf(+1, +0, +0, +1),
+
     arrayOf(+1, +0, +1, -1),
     arrayOf(+1, +0, +1, +0),
     arrayOf(+1, +0, +1, +1),
 
+
     arrayOf(+1, +1, -1, -1),
     arrayOf(+1, +1, -1, +0),
     arrayOf(+1, +1, -1, +1),
+
     arrayOf(+1, +1, +0, -1),
     arrayOf(+1, +1, +0, +0),
     arrayOf(+1, +1, +0, +1),
+
     arrayOf(+1, +1, +1, -1),
     arrayOf(+1, +1, +1, +0),
     arrayOf(+1, +1, +1, +1),
