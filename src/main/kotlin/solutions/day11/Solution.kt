@@ -1,6 +1,8 @@
 package solutions.day11
 
 import solutions.GenericSolution
+import util.are2DCoordinatesValid
+import util.neighbours2D
 import util.read2dCharArray
 import java.io.File
 
@@ -16,45 +18,18 @@ class Solution : GenericSolution {
     private val empty = 'L'
     private val occupied = '#'
 
-    private val directionGrid = arrayOf(
-        arrayOf(-1, -1),
-        arrayOf(-1, +0),
-        arrayOf(-1, +1),
-        arrayOf(+0, +1),
-        arrayOf(+1, +1),
-        arrayOf(+1, +0),
-        arrayOf(+1, -1),
-        arrayOf(+0, -1)
-    )
-
     private fun countOccupiedSeats(seatGrid: Array<CharArray>): Int {
         return seatGrid.map { seatLine -> seatLine.filter { it == occupied }.count() }.sum()
     }
 
     private fun Array<CharArray>.copy() = Array(size) { get(it).clone() }
 
-    private fun areSeatCoordinatesValid(it: Array<Int>, seatGrid: Array<CharArray>): Boolean {
-        if (it[0] < 0 || it[1] < 0) {
-            return false
-        }
-
-        if (it[0] >= seatGrid.size) {
-            return false
-        }
-
-        if (it[1] >= seatGrid[0].size) {
-            return false
-        }
-
-        return true
-    }
-
     private fun getAdjacentSeats(i: Int, j: Int, seatGrid: Array<CharArray>): List<Char> {
-        val adjacentSeatCoordinateGrid = directionGrid
+        val adjacentSeatCoordinateGrid = neighbours2D
             .map { arrayOf(i + it[0], j + it[1]) }
 
         return adjacentSeatCoordinateGrid
-            .filter { areSeatCoordinatesValid(it, seatGrid) }
+            .filter { are2DCoordinatesValid(it, seatGrid) }
             .map { seatGrid[it[0]][it[1]] }
     }
 
@@ -107,7 +82,7 @@ class Solution : GenericSolution {
     private fun getVisibleSeats(i: Int, j: Int, seatGrid: Array<CharArray>): List<Char> {
         val visibleSeatGrid = arrayListOf<Char>()
 
-        for (direction in directionGrid) {
+        for (direction in neighbours2D) {
             var x = i
             var y = j
 
@@ -115,7 +90,7 @@ class Solution : GenericSolution {
                 x += direction[0]
                 y += direction[1]
 
-                if (!areSeatCoordinatesValid(arrayOf(x, y), seatGrid)) {
+                if (!are2DCoordinatesValid(arrayOf(x, y), seatGrid)) {
                     break
                 }
 

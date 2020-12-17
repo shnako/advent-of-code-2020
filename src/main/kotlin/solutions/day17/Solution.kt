@@ -1,41 +1,12 @@
 package solutions.day17
 
 import solutions.GenericSolution
+import util.are3DCoordinatesValid
+import util.neighbours3D
 import util.read2dCharArray
 import java.io.File
 
 class Solution : GenericSolution {
-    private val neighbourGrid = arrayOf(
-        arrayOf(-1, -1, -1),
-        arrayOf(-1, -1, +0),
-        arrayOf(-1, -1, +1),
-        arrayOf(-1, +0, +1),
-        arrayOf(-1, +1, +1),
-        arrayOf(-1, +1, +0),
-        arrayOf(-1, +1, -1),
-        arrayOf(-1, +0, -1),
-        arrayOf(-1, +0, +0),
-
-        arrayOf(+0, -1, -1),
-        arrayOf(+0, -1, +0),
-        arrayOf(+0, -1, +1),
-        arrayOf(+0, +0, +1),
-        arrayOf(+0, +1, +1),
-        arrayOf(+0, +1, +0),
-        arrayOf(+0, +1, -1),
-        arrayOf(+0, +0, -1),
-
-        arrayOf(+1, -1, -1),
-        arrayOf(+1, -1, +0),
-        arrayOf(+1, -1, +1),
-        arrayOf(+1, +0, +1),
-        arrayOf(+1, +1, +1),
-        arrayOf(+1, +1, +0),
-        arrayOf(+1, +1, -1),
-        arrayOf(+1, +0, -1),
-        arrayOf(+1, +0, +0),
-    )
-
     private fun parseInput(inputFile: File): List<List<Boolean>> {
         return read2dCharArray(inputFile)
             .map { it.map { ch -> ch == '#' } }
@@ -79,27 +50,16 @@ class Solution : GenericSolution {
         return Array(grid.size) { z ->
             Array(grid[z].size) { x ->
                 BooleanArray(grid[z][x].size) { y ->
+                    //TODO Do I need copyOf?
                     grid[z][x][y]
                 }
             }
         }
     }
 
-    private fun areCoordinatesValid(z: Int, x: Int, y: Int, grid: Array<Array<BooleanArray>>): Boolean {
-        if (z < 0 || x < 0 || y < 0) {
-            return false
-        }
-
-        if (z >= grid.size || x >= grid[z].size || y >= grid[z][x].size) {
-            return false
-        }
-
-        return true
-    }
-
     private fun countActiveNeighbours(z: Int, x: Int, y: Int, grid: Array<Array<BooleanArray>>): Int {
-        return neighbourGrid
-            .filter { areCoordinatesValid(z + it[0], x + it[1], y + it[2], grid) }
+        return neighbours3D
+            .filter { are3DCoordinatesValid(z + it[0], x + it[1], y + it[2], grid) }
             .map { grid[z + it[0]][x + it[1]][y + it[2]] }
             .filter { it }
             .count()
