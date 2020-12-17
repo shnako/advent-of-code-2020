@@ -1,5 +1,7 @@
 package util
 
+// region 2D
+
 val neighbours2D = arrayOf(
     arrayOf(-1, -1),
     arrayOf(-1, +0),
@@ -24,6 +26,10 @@ fun are2DCoordinatesValid(coordinates: Array<Int>, grid2D: Array<CharArray>): Bo
 
     return true
 }
+
+// endregion
+
+// region 3D
 
 val neighbours3D = arrayOf(
     arrayOf(-1, -1, -1),
@@ -67,3 +73,5 @@ fun are3DCoordinatesValid(x: Int, y: Int, z: Int, grid3D: Array<Array<BooleanArr
 
     return true
 }
+
+// endregion
