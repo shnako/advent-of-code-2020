@@ -3,10 +3,9 @@ package solutions.day23
 import solutions.GenericSolution
 import util.readFileAsString
 import java.io.File
-import java.util.*
 
 data class Game(
-    val cups: LinkedList<Int>,
+    val cups: ArrayDeque<Int>,
     val min: Int,
     val max: Int,
 )
@@ -19,7 +18,7 @@ class Solution : GenericSolution {
             .map { it.toInt() - 48 }
 
         return Game(
-            LinkedList(cups),
+            ArrayDeque(cups),
             cups.minOrNull()!!,
             cups.maxOrNull()!!,
         )
@@ -57,7 +56,7 @@ class Solution : GenericSolution {
     }
 
     private fun getResult(game: Game): Long {
-        while (game.cups.peekFirst() != 1) {
+        while (game.cups.first() != 1) {
             game.cups.addLast(game.cups.removeFirst())
         }
 
@@ -82,6 +81,19 @@ class Solution : GenericSolution {
     }
 
     override fun runPart2(inputFile: File): String {
-        TODO("Not yet implemented")
+        val game = readCups(inputFile)
+        for (i in game.max + 1..1000000) {
+            game.cups.addLast(i)
+        }
+
+        for (i in 1..10000000) {
+            playMove(game)
+            if (i % 100 == 0) {
+                println(i)
+            }
+        }
+
+        val index1 = game.cups.indexOf(1)
+        return (game.cups[index1 + 1] * game.cups[index1 + 2]).toString()
     }
 }
