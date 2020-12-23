@@ -4,6 +4,15 @@ import solutions.GenericSolution
 import util.readFileAsString
 import java.io.File
 
+/**
+ * The solution to part 1 is trivial when representing the circle as a LinkedList.
+ *
+ * For part 2 however this is too slow as identifying the node to add after is O(n).
+ * In order to make identifying the node O(1), I implemented my own LinkedList
+ * which maps element values to nodes.
+ *
+ * This LinkedList also supports moveFirstXAfterValue to speed up the move operations.
+ */
 class Solution : GenericSolution {
     private fun readCups(inputFile: File, maxSize: Int): MyLinkedList {
         val cups = readFileAsString(inputFile)
