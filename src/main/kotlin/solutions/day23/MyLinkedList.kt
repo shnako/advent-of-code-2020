@@ -5,11 +5,11 @@ data class Node(
     var next: Node? = null,
 )
 
-class MyLinkedList(items: Collection<Int>) {
+class MyLinkedList(items: Collection<Int>, maxSize: Int) {
     private var first: Node
     private var last: Node
     private var size: Int
-    private var valueMap: MutableMap<Int, Node>
+    private var valueMap: Array<Node?>
 
     init {
         val iterator = items.iterator()
@@ -17,7 +17,7 @@ class MyLinkedList(items: Collection<Int>) {
         first = Node(iterator.next())
         last = first
         size = 1
-        valueMap = mutableMapOf()
+        valueMap = Array(maxSize + 1) { null }
         valueMap[first.value] = first
 
         while (iterator.hasNext()) {
@@ -39,7 +39,7 @@ class MyLinkedList(items: Collection<Int>) {
             return -1
         }
         val oldFirst = first
-        valueMap.remove(oldFirst.value)
+        valueMap[oldFirst.value] = null
         size--
         if (size > 0 && first.next != null) {
             first = first.next!!
@@ -107,11 +107,22 @@ class MyLinkedList(items: Collection<Int>) {
     }
 
     fun max(): Int {
-        return valueMap.keys.maxOrNull()!!
+        var max = -1
+        var node: Node? = first
+        while (node != null) {
+            if (node.value > max) {
+                max = node.value
+            }
+            node = node.next
+        }
+        return max
     }
 
     fun contains(value: Int): Boolean {
-        return valueMap.containsKey(value)
+        if (value < 0 || value > valueMap.size) {
+            return false
+        }
+        return valueMap[value] != null
     }
 
     override fun toString(): String {

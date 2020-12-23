@@ -9,7 +9,7 @@ internal class MyLinkedListTest {
 
     @BeforeEach
     internal fun setUp() {
-        testList = MyLinkedList(listOf(1, 2, 3))
+        testList = MyLinkedList(listOf(1, 2, 3), 100)
     }
 
     @Test

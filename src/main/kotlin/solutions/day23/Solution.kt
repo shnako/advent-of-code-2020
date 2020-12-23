@@ -3,15 +3,16 @@ package solutions.day23
 import solutions.GenericSolution
 import util.readFileAsString
 import java.io.File
+import kotlin.math.max
 
 class Solution : GenericSolution {
-    private fun readCups(inputFile: File): MyLinkedList {
+    private fun readCups(inputFile: File, maxSize: Int): MyLinkedList {
         val cups = readFileAsString(inputFile)
             .toCharArray()
             .dropLast(1)
             .map { it.toInt() - 48 }
 
-        return MyLinkedList(cups)
+        return MyLinkedList(cups, if (maxSize == -1) cups.size else maxSize)
     }
 
     private fun findValidLabel(current: Int, max: Int, nextCup1: Int, nextCup2: Int, nextCup3: Int): Int {
@@ -60,7 +61,7 @@ class Solution : GenericSolution {
     }
 
     override fun runPart1(inputFile: File): String {
-        val cups = readCups(inputFile)
+        val cups = readCups(inputFile, -1)
         val max = cups.max()
         for (i in 1..100) {
             playMove(cups, max)
@@ -69,8 +70,8 @@ class Solution : GenericSolution {
     }
 
     override fun runPart2(inputFile: File): String {
-        val cups = readCups(inputFile)
         val maxCup = 1000000
+        val cups = readCups(inputFile, maxCup)
         for (i in (cups.max() + 1)..maxCup) {
             cups.add(i)
         }
