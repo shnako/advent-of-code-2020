@@ -47,6 +47,24 @@ class MyLinkedList(items: Collection<Int>, maxSize: Int) {
         return oldFirst.value
     }
 
+    fun moveFirstXAfterValue(elements: Int, afterValue: Int) {
+        val afterNode = valueMap[afterValue]
+
+        val segmentFirst = first
+        var segmentLast = segmentFirst
+        for (i in 1 until elements) {
+            segmentLast = segmentLast.next!!
+        }
+
+        first = segmentLast.next!!
+        segmentLast.next = afterNode!!.next
+        afterNode.next = segmentFirst
+
+        if (afterNode == last) {
+            last = segmentLast
+        }
+    }
+
     fun add(value: Int) {
         val newNode = Node(value)
         valueMap[value] = newNode

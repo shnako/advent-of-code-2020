@@ -3,7 +3,6 @@ package solutions.day23
 import solutions.GenericSolution
 import util.readFileAsString
 import java.io.File
-import kotlin.math.max
 
 class Solution : GenericSolution {
     private fun readCups(inputFile: File, maxSize: Int): MyLinkedList {
@@ -32,15 +31,13 @@ class Solution : GenericSolution {
 
     private fun playMove(cups: MyLinkedList, max: Int) {
         val current = cups.pop()
-        val nextCup1 = cups.pop()
-        val nextCup2 = cups.pop()
-        val nextCup3 = cups.pop()
+        val nextCup1 = cups.get(0)
+        val nextCup2 = cups.get(1)
+        val nextCup3 = cups.get(2)
 
         val destinationCupLabel = findValidLabel(current, max, nextCup1, nextCup2, nextCup3)
 
-        cups.insertAfterValue(destinationCupLabel, nextCup3)
-        cups.insertAfterValue(destinationCupLabel, nextCup2)
-        cups.insertAfterValue(destinationCupLabel, nextCup1)
+        cups.moveFirstXAfterValue(3, destinationCupLabel)
 
         cups.add(current)
     }
@@ -78,9 +75,6 @@ class Solution : GenericSolution {
 
         for (i in 1..10000000) {
             playMove(cups, maxCup)
-            if (i % 1000000 == 0) {
-                println(i)
-            }
         }
 
         val index1 = cups.indexOf(1)

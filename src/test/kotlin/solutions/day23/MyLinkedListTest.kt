@@ -40,6 +40,18 @@ internal class MyLinkedListTest {
     }
 
     @Test
+    fun moveFirstXAfterValue() {
+        testList.moveFirstXAfterValue(2, 3)
+        assertEquals(3, testList.size())
+
+        assertEquals(3, testList.pop())
+        assertEquals(1, testList.pop())
+        assertEquals(2, testList.pop())
+
+        assertFalse(testList.isNotEmpty())
+    }
+
+    @Test
     fun add() {
         testList.add(4)
         assertEquals(4, testList.size())
