@@ -5,6 +5,11 @@ data class Node(
     var next: Node? = null,
 )
 
+/**
+ * Beware - there are bugs in this code.
+ * This class is only intended to work for the specified input set.
+ * It also contains methods that are no longer used.
+ */
 class MyLinkedList(items: Collection<Int>, maxSize: Int) {
     private var first: Node
     private var last: Node

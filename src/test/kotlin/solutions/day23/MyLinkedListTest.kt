@@ -4,6 +4,12 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
+/**
+ * These tests are not intended to be exhaustive,
+ * nor is the MyLinkedList class intended to be bug-free.
+ * The class is only intended to work for the specified input set
+ * and these tests only aim to confirm parts of that.
+ */
 internal class MyLinkedListTest {
     private lateinit var testList: MyLinkedList
 
