@@ -7,8 +7,9 @@ import util.readLines
 import java.io.File
 
 /**
- * This solution relies on the implementation of the grid as cube coordinates.
+ * This solution relies on the representation of the grid using cube coordinates.
  * https://www.redblobgames.com/grids/hexagons/#coordinates-cube
+ * This uses 3 coordinate points and runs part 2 in about 11s.
  *
  * Part 1:
  * Navigate to get the coordinates.
@@ -23,6 +24,7 @@ import java.io.File
  * as these are the only ones that could change and apply the rules.
  * The result is the size of the set after 100 days.
  */
+@Suppress("DuplicatedCode", "unused") // The 2 solutions are very similar so this is fine.
 class SolutionCube : GenericSolution {
     private val coordinates = mapOf(
         Pair("w", ImmutableTriple(-1, +1, +0)),

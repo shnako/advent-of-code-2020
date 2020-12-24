@@ -1,18 +1,19 @@
 package solutions.day24
 
-import org.apache.commons.lang3.tuple.ImmutableTriple
-import org.apache.commons.lang3.tuple.MutableTriple
+import org.apache.commons.lang3.tuple.ImmutablePair
+import org.apache.commons.lang3.tuple.MutablePair
 import solutions.GenericSolution
 import util.readLines
 import java.io.File
 
 /**
- * This solution relies on the implementation of the grid as cube coordinates.
- * https://www.redblobgames.com/grids/hexagons/#coordinates-cube
+ * This solution relies on the representation of the grid using axial coordinates.
+ * https://www.redblobgames.com/grids/hexagons/#coordinates-axial
+ * This uses 2 coordinate points and runs part 2 in about 3s.
  *
  * Part 1:
  * Navigate to get the coordinates.
- * Store all black tile coordinates as Triple objects in a set.
+ * Store all black tile coordinates as Pair objects in a set.
  * If the current coordinates are already in the set (already black) remove them (now white).
  * Otherwise add to the set (now black).
  * The result is the size of the set.
@@ -23,33 +24,30 @@ import java.io.File
  * as these are the only ones that could change and apply the rules.
  * The result is the size of the set after 100 days.
  */
+@Suppress("DuplicatedCode") // The 2 solutions are very similar so this is fine.
 class Solution : GenericSolution {
     private val coordinates = mapOf(
-        Pair("w", ImmutableTriple(-1, +1, +0)),
-        Pair("e", ImmutableTriple(+1, -1, +0)),
-        Pair("sw", ImmutableTriple(-1, +0, +1)),
-        Pair("se", ImmutableTriple(+0, -1, +1)),
-        Pair("nw", ImmutableTriple(+0, +1, -1)),
-        Pair("ne", ImmutableTriple(+1, +0, -1)),
+        Pair("w", ImmutablePair(-1, +0)),
+        Pair("e", ImmutablePair(+1, +0)),
+        Pair("sw", ImmutablePair(-1, +1)),
+        Pair("se", ImmutablePair(+0, +1)),
+        Pair("nw", ImmutablePair(+0, -1)),
+        Pair("ne", ImmutablePair(+1, -1)),
     )
 
-    private fun move(
-        direction: String,
-        currentCoordinates: MutableTriple<Int, Int, Int>
-    ): MutableTriple<Int, Int, Int> {
+    private fun move(direction: String, currentCoordinates: MutablePair<Int, Int>): MutablePair<Int, Int> {
         val directionCoordinates = coordinates[direction]!!
 
         currentCoordinates.left += directionCoordinates.left
-        currentCoordinates.middle += directionCoordinates.middle
         currentCoordinates.right += directionCoordinates.right
 
         return currentCoordinates
     }
 
-    private fun populateBlackTiles(tileCoordinates: Collection<String>): MutableSet<MutableTriple<Int, Int, Int>> {
-        val blackTiles = mutableSetOf<MutableTriple<Int, Int, Int>>()
+    private fun populateBlackTiles(tileCoordinates: Collection<String>): MutableSet<MutablePair<Int, Int>> {
+        val blackTiles = mutableSetOf<MutablePair<Int, Int>>()
         for (tileCoordinate in tileCoordinates) {
-            val tile = MutableTriple(0, 0, 0)
+            val tile = MutablePair(0, 0)
             var i = 0
             while (i < tileCoordinate.length) {
                 val direction: String
@@ -80,14 +78,14 @@ class Solution : GenericSolution {
         return blackTiles.size.toString()
     }
 
-    private fun getNeighbourTiles(tile: MutableTriple<Int, Int, Int>): List<MutableTriple<Int, Int, Int>> {
+    private fun getNeighbourTiles(tile: MutablePair<Int, Int>): List<MutablePair<Int, Int>> {
         return coordinates
-            .map { move(it.key, MutableTriple.of(tile.left, tile.middle, tile.right)) }
+            .map { move(it.key, MutablePair.of(tile.left, tile.right)) }
             .toList()
     }
 
-    private fun flipDaily(blackTiles: Set<MutableTriple<Int, Int, Int>>): MutableSet<MutableTriple<Int, Int, Int>> {
-        val newBlackTiles = mutableSetOf<MutableTriple<Int, Int, Int>>()
+    private fun flipDaily(blackTiles: Set<MutablePair<Int, Int>>): MutableSet<MutablePair<Int, Int>> {
+        val newBlackTiles = mutableSetOf<MutablePair<Int, Int>>()
 
         //region Any black tile with zero or more than 2 black tiles immediately adjacent to it is flipped to white.
         val tileToNeighboursMap = blackTiles
