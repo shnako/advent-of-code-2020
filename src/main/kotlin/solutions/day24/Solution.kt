@@ -6,6 +6,23 @@ import solutions.GenericSolution
 import util.readLines
 import java.io.File
 
+/**
+ * This solution relies on the implementation of the grid as cube coordinates.
+ * https://www.redblobgames.com/grids/hexagons/#coordinates-cube
+ *
+ * Part 1:
+ * Navigate to get the coordinates.
+ * Store all black tile coordinates as Triple objects in a set.
+ * If the current coordinates are already in the set (already black) remove them (now white).
+ * Otherwise add to the set (now black).
+ * The result is the size of the set.
+ *
+ * Part 2:
+ * Do the above to find the arrangement on day 0.
+ * For each day, get all neighbours of the black tiles and the neighbours of their neighbours
+ * as these are the only ones that could change and apply the rules.
+ * The result is the size of the set after 100 days.
+ */
 class Solution : GenericSolution {
     private val coordinates = mapOf(
         Pair("w", ImmutableTriple(-1, +1, +0)),
@@ -70,11 +87,12 @@ class Solution : GenericSolution {
     }
 
     private fun flipDaily(blackTiles: Set<MutableTriple<Int, Int, Int>>): MutableSet<MutableTriple<Int, Int, Int>> {
+        val newBlackTiles = mutableSetOf<MutableTriple<Int, Int, Int>>()
+
+        //region Any black tile with zero or more than 2 black tiles immediately adjacent to it is flipped to white.
         val tileToNeighboursMap = blackTiles
             .associateBy({ it }, { getNeighbourTiles(it) })
 
-        // Any black tile with zero or more than 2 black tiles immediately adjacent to it is flipped to white.
-        val newBlackTiles = mutableSetOf<MutableTriple<Int, Int, Int>>()
         for (blackTile in blackTiles) {
             val blackNeighbourTiles = tileToNeighboursMap[blackTile]!!
                 .count { blackTiles.contains(it) }
@@ -82,12 +100,13 @@ class Solution : GenericSolution {
                 newBlackTiles.add(blackTile)
             }
         }
+        // endregion
 
+        // region Any white tile with exactly 2 black tiles immediately adjacent to it is flipped to black.
         val neighboursOfNeighbourTiles = tileToNeighboursMap.values
             .flatten()
             .associateBy({ it }, { getNeighbourTiles(it) })
 
-        // Any white tile with exactly 2 black tiles immediately adjacent to it is flipped to black.
         for (tile in neighboursOfNeighbourTiles.keys) {
             // Only care about white tiles
             if (blackTiles.contains(tile)) {
@@ -100,6 +119,7 @@ class Solution : GenericSolution {
                 newBlackTiles.add(tile)
             }
         }
+        // endregion
 
         return newBlackTiles
     }
