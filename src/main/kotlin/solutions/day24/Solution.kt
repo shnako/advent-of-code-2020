@@ -16,12 +16,17 @@ class Solution : GenericSolution {
         Pair("ne", ImmutableTriple(+1, +0, -1)),
     )
 
-    private fun move(direction: String, currentCoordinates: MutableTriple<Int, Int, Int>) {
+    private fun move(
+        direction: String,
+        currentCoordinates: MutableTriple<Int, Int, Int>
+    ): MutableTriple<Int, Int, Int> {
         val directionCoordinates = coordinates[direction]!!
 
         currentCoordinates.left += directionCoordinates.left
         currentCoordinates.middle += directionCoordinates.middle
         currentCoordinates.right += directionCoordinates.right
+
+        return currentCoordinates
     }
 
     private fun populateBlackTiles(tileCoordinates: Collection<String>): MutableSet<MutableTriple<Int, Int, Int>> {
@@ -58,7 +63,57 @@ class Solution : GenericSolution {
         return blackTiles.size.toString()
     }
 
+    private fun getNeighbourTiles(tile: MutableTriple<Int, Int, Int>): List<MutableTriple<Int, Int, Int>> {
+        return coordinates
+            .map { move(it.key, MutableTriple.of(tile.left, tile.middle, tile.right)) }
+            .toList()
+    }
+
+    private fun flipDaily(blackTiles: Set<MutableTriple<Int, Int, Int>>): MutableSet<MutableTriple<Int, Int, Int>> {
+        val tileToNeighboursMap = blackTiles
+            .associateBy({ it }, { getNeighbourTiles(it) })
+
+        // Any black tile with zero or more than 2 black tiles immediately adjacent to it is flipped to white.
+        val newBlackTiles = mutableSetOf<MutableTriple<Int, Int, Int>>()
+        for (blackTile in blackTiles) {
+            val blackNeighbourTiles = tileToNeighboursMap[blackTile]!!
+                .count { blackTiles.contains(it) }
+            if (blackNeighbourTiles == 1 || blackNeighbourTiles == 2) {
+                newBlackTiles.add(blackTile)
+            }
+        }
+
+        val neighboursOfNeighbourTiles = tileToNeighboursMap.values
+            .flatten()
+            .associateBy({ it }, { getNeighbourTiles(it) })
+
+        // Any white tile with exactly 2 black tiles immediately adjacent to it is flipped to black.
+        for (tile in neighboursOfNeighbourTiles.keys) {
+            // Only care about white tiles
+            if (blackTiles.contains(tile)) {
+                continue
+            }
+
+            val blackNeighbourTiles = neighboursOfNeighbourTiles[tile]!!
+                .count { blackTiles.contains(it) }
+            if (blackNeighbourTiles == 2) {
+                newBlackTiles.add(tile)
+            }
+        }
+
+        return newBlackTiles
+    }
+
     override fun runPart2(inputFile: File): String {
-        TODO("Not yet implemented")
+        val tileCoordinates = readLines(inputFile)
+
+        var blackTiles = populateBlackTiles(tileCoordinates)
+
+        for (day in 1..100) {
+            blackTiles = flipDaily(blackTiles)
+            println("After day $day there are ${blackTiles.size} black tiles.")
+        }
+
+        return blackTiles.size.toString()
     }
 }
