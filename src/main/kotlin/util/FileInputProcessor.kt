@@ -24,5 +24,6 @@ fun read2dCharArray(file: File): Array<CharArray> {
 }
 
 fun readFileAsString(file: File): String {
-    return file.readText()
+    // Removing carriage returns so that splits by "\n" work correctly on Windows as well.
+    return file.readText().replace("\r", "")
 }

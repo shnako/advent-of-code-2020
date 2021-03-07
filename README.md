@@ -56,14 +56,18 @@ You can run all the tests using gradle:
 
     ./gradlew test
 
-or
+or if you're using Windows:
 
-    gradle.bat test
+    gradlew.bat test
 
 ### Individual solutions via main
 You can also take advantage of the functionality implemented in [main.kt](/src/main/kotlin/main.kt) to run the puzzles individually:
 
     ./gradlew run --args='<day> <part>'
+
+or if you're using Windows:
+
+    gradlew.bat run --args="<day> <part>"
 
 replacing `<day>` with the puzzle's day number and `<part>` with either 1 or 2.
 
