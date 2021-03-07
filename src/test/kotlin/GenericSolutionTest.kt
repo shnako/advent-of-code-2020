@@ -13,12 +13,12 @@ abstract class GenericSolutionTest(private val solution: GenericSolution) {
     @Test
     fun part1Test() {
         val part1Result = solution.runPart1(inputFile)
-        assertEquals(expectedPart1Result, part1Result)
+        assertEquals(expectedPart1Result, part1Result, this.javaClass.toString())
     }
 
     @Test
     fun part2Test() {
         val part2Result = solution.runPart2(inputFile)
-        assertEquals(expectedPart2Result, part2Result)
+        assertEquals(expectedPart2Result, part2Result, this.javaClass.toString())
     }
 }
