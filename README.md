@@ -66,3 +66,12 @@ You can also take advantage of the functionality implemented in [main.kt](/src/m
     ./gradlew run --args='<day> <part>'
 
 replacing `<day>` with the puzzle's day number and `<part>` with either 1 or 2.
+
+## Results
+
+### Dashboard
+![Advent of Code 2020 Dashboard Result](dashboard.png)
+
+
+### Company Leaderboard
+![Anonymized Private Company Leaderboard](company-leaderboard-anonymized.jpg)
